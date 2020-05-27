@@ -26,7 +26,6 @@ void Graphics::loadBackgroundImg()
 
     // load image and create copy to be used for semi-transparent overlay
     cv::Mat background = cv::imread(_bgFilename);
-  
     _images.push_back(background);         // first element is the original background
     _images.push_back(background.clone()); // second element will be the transparent overlay
     _images.push_back(background.clone()); // third element will be the result image for display
