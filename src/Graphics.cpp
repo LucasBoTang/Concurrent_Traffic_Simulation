@@ -48,8 +48,9 @@ void Graphics::drawTrafficObjects()
             // cast object type from TrafficObject to Intersection
             std::shared_ptr<Intersection> intersection = std::dynamic_pointer_cast<Intersection>(it);
 
-            // intersections are green
-            cv::circle(_images.at(1), cv::Point2d(posx, posy), 25, cv::Scalar(0, 255, 0), -1);
+            // set color according to traffic light and draw the intersection as a circle
+            cv::Scalar trafficLightColor = intersection->trafficLightIsGreen() == true ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255);
+            cv::circle(_images.at(1), cv::Point2d(posx, posy), 25, trafficLightColor, -1);
         }
         else if (it->getType() == ObjectType::objectVehicle)
         {

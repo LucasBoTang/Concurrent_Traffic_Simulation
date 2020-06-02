@@ -11,7 +11,7 @@ link_directories(${OpenCV_LIBRARY_DIRS})
 add_definitions(${OpenCV_DEFINITIONS})
 
 # Find all executables
-file(GLOB project_SRCS src/*.cpp)
+file(GLOB project_SRCS src/*.cpp) #src/*.h
 
 # Add project executable
 add_executable(traffic_simulation ${project_SRCS})
