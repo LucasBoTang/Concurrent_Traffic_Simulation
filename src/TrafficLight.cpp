@@ -72,10 +72,8 @@ void TrafficLight::cycleThroughPhases() {
                 std::cout << "Traffic light #" << _id << ": phase turns red." << std::endl;
             }
             // send update
-            auto futureSend = std::async(std::launch::async,
-                                         &MessageQueue<TrafficLightPhase>::send,
-                                         _queue,
-                                         TrafficLight::getCurrentPhase());
+            TrafficLightPhase message = TrafficLight::getCurrentPhase();
+            _queue.send(std::move(message));
             // reset
             duration = dist(gen);
             auto tick = std::chrono::system_clock::now();
