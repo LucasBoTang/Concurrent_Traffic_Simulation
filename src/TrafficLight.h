@@ -19,7 +19,9 @@ template <class T>
 class MessageQueue
 {
 public:
-
+    T receive();
+    void send(T &&msg);
+ 
 private:
     
 }; 
@@ -49,6 +51,7 @@ private:
     // send in conjunction with move semantics.
     
     TrafficLightPhase _currentPhase;
+    MessageQueue<TrafficLightPhase> _queue;
     std::condition_variable _condition;
     std::mutex _mutex;
 };
