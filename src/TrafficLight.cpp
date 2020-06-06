@@ -61,21 +61,23 @@ void TrafficLight::cycleThroughPhases()
     int duration = dist(gen);
         
     // infinite loop
-    auto tick = std::chrono::system_clock::now();
+    std::chrono::time_point<std::chrono::system_clock> tick, tock;
+    tick = std::chrono::system_clock::now();
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         // time elpase
-        auto tock = std::chrono::system_clock::now();
-        int elapse = (tock - tick).count();
+        tock = std::chrono::system_clock::now();
+        int elapse = std::chrono::duration_cast<std::chrono::milliseconds>(tock - tick).count();
+        // std::cout << elapse << std::endl;
         if (elapse > duration) {
             // toggles current phase
             if (_currentPhase == TrafficLightPhase::red) {
                 _currentPhase = TrafficLightPhase::green;
-                std::cout << "Traffic light #" << _id << ": phase turns green." << std::endl;
+                //std::cout << "Traffic light #" << _id << ": phase turns green." << std::endl;
             }
             else {
                 _currentPhase = TrafficLightPhase::red;
-                std::cout << "Traffic light #" << _id << ": phase turns red." << std::endl;
+                //std::cout << "Traffic light #" << _id << ": phase turns red." << std::endl;
             }
             // send update
             TrafficLightPhase message = TrafficLight::getCurrentPhase();
@@ -86,7 +88,7 @@ void TrafficLight::cycleThroughPhases()
                                          std::move(message));
             // reset
             duration = dist(gen);
-            auto tick = std::chrono::system_clock::now();
+            tick = std::chrono::system_clock::now();
         }
     }
 }
