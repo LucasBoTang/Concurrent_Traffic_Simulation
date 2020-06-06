@@ -24,11 +24,11 @@ private:
 
 enum class TrafficLightPhase {red, green};
 
-class TrafficLight : TrafficObject {
+class TrafficLight : TrafficObject
+{
 public:
     // constructor / desctructor
     TrafficLight();
-    ~TrafficLight();
 
     // getters / setters
     TrafficLightPhase getCurrentPhase();

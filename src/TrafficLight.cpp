@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <future>
 #include "TrafficLight.h"
 
 /* Implementation of class "MessageQueue" */
@@ -45,7 +46,8 @@ void TrafficLight::simulate()
 }
 
 // virtual function which is executed in a thread
-void TrafficLight::cycleThroughPhases() {     
+void TrafficLight::cycleThroughPhases()
+{     
     // random duration
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -71,7 +73,11 @@ void TrafficLight::cycleThroughPhases() {
             }
             // send update
             TrafficLightPhase message = TrafficLight::getCurrentPhase();
-            _queue.send(std::move(message));
+            //_queue.send(std::move(message)); // may be blocked
+            auto sendFuture = std::async(std::launch::async, 
+                                         &MessageQueue<TrafficLightPhase>::send,
+                                         &_queue,
+                                         std::move(message));
             // reset
             duration = dist(gen);
             auto tick = std::chrono::system_clock::now();
