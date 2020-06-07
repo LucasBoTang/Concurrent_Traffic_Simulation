@@ -25,6 +25,7 @@ void MessageQueue<T>::send(T &&msg)
 }
 
 /* Implementation of class "TrafficLight" */
+
 TrafficLight::TrafficLight()
 {
     _currentPhase = TrafficLightPhase::red;
@@ -64,6 +65,7 @@ void TrafficLight::cycleThroughPhases()
     std::chrono::time_point<std::chrono::system_clock> tick, tock;
     tick = std::chrono::system_clock::now();
     while (true) {
+        // avoid CPU overclocking
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         // time elpase
         tock = std::chrono::system_clock::now();
@@ -81,11 +83,13 @@ void TrafficLight::cycleThroughPhases()
             }
             // send update
             TrafficLightPhase message = TrafficLight::getCurrentPhase();
-            //_queue.send(std::move(message)); // may be blocked
+            _queue.send(std::move(message)); // may be blocked
+            /*
             auto sendFuture = std::async(std::launch::async, 
                                          &MessageQueue<TrafficLightPhase>::send,
                                          &_queue,
                                          std::move(message));
+            */
             // reset
             duration = dist(gen);
             tick = std::chrono::system_clock::now();
